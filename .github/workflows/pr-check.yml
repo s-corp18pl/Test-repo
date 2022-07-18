@@ -1,0 +1,13 @@
+name: Documentation
+
+on:
+  pull_request:
+    branches: development
+    types: [opened, reopened]
+
+
+permissions:
+  contents: read
+
+jobs:
+  - run: echo "all good"
