@@ -10,4 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  - run: echo "all good"
+  check:
+    steps:
+      - run: echo "all good"
