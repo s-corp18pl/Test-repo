@@ -11,5 +11,7 @@ permissions:
 
 jobs:
   check:
+    name: "pr check"
+    runs-on: ubuntu-latest
     steps:
       - run: echo "all good"
