@@ -1,0 +1,17 @@
+name: Documentation
+
+on:
+  pull_request:
+    branches: development
+    types: [opened, reopened]
+
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: "pr check"
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "all good"
