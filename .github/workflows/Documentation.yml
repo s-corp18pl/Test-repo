@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - development
+  push:
+    branches:
+      - gh-pages
+    paths:
+      - 'Doxyfile'
+      - 'static/**'
 
 permissions:
   contents: write
