@@ -25,29 +25,13 @@ var NAVTREE =
   [ "O3DE ROS2 Gem", "index.html", [
     [ "O3DE Ros 2 Gem documentation", "index.html", [
       [ "Diagram of classes", "index.html#autotoc_md1", null ]
-    ] ],
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ]
-      ] ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-".html",
-"struct_r_o_s2_1_1_namespace_configuration.html#a1b56d5215135a934b8441a1e7b0bbdb5"
+"index.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
