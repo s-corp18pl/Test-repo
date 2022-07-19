@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - development
-  push:
-    branches:
-      - gh-pages
-    paths:
-      - 'Doxyfile'
-      - 'static/**'
+  workflow_run:
+    workflows: ["Github Pages Configuration Changed"]
+    types:
+      - completed
 
 permissions:
   contents: write
