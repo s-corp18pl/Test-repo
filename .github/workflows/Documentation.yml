@@ -5,8 +5,6 @@ on:
     branches:
       - development
   workflow_run:
-    branches:
-      - gh-pages
     workflows: ["Documentation Configuration Changed"]
     types:
       - completed
