@@ -9,7 +9,7 @@ on:
       - 'static/**'
 
 jobs:
-  validate-data:
+  print-message:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Documentation configuration files have been changed."
