@@ -39,49 +39,49 @@ jobs:
           cd o3de
           git lfs pull
           cd ..
-      - name: O3DE Dependencies setup - CMake
-        run: |
-          wget -O \
-            - https://apt.kitware.com/keys/kitware-archive-latest.asc 2> \
-            /dev/null | gpg --dearmor - | \
-            sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-          echo \
-            'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg]' \
-            ' https://apt.kitware.com/ubuntu/ focal main' | \
-            sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
-          sudo apt-get update
-          sudo apt-get install cmake
-      - name: O3DE Dependencies setup - Clang
-        run: |
-          sudo apt-get install clang-12
-          CC="/usr/bin/clang-12"
-          CXX="/usr/bin/clang++-12"
-      - name: O3DE Dependencies setup - libffi
-        run: |
-          pushd /tmp
-          LIBFFI_PACKAGE_NAME=libffi6_3.2.1-8_amd64.deb
-          LIBFFI_PACKAGE_URL="http://mirrors.kernel.org"
-          LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/ubuntu/pool/main"
-          LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/libf/libffi/"
-          curl \
-            --location $LIBFFI_PACKAGE_URL/$LIBFFI_PACKAGE_NAME \
-            -o $LIBFFI_PACKAGE_NAME
-          sudo apt install ./$LIBFFI_PACKAGE_NAME
-          popd
-      - name: O3DE Dependencies setup - additional library dependencies
-        run: |
-          sudo apt-get install libglu1-mesa-dev \
-            libxcb-xinerama0 libxcb-xinput0 libxcb-xinput-dev \
-            libxcb-xfixes0-dev libxcb-xkb-dev libxkbcommon-dev \
-            libxkbcommon-x11-dev libfontconfig1-dev libcurl4-openssl-dev \
-            libsdl2-dev zlib1g-dev mesa-common-dev libssl-dev
-      - name: O3DE Dependencies setup - Ninja Build System
-        run: |
-          sudo apt-get install ninja-build
-      - name: O3DE ROS2 GEM Dependencies setup - ROS2
-        uses: ros-tooling/setup-ros@v0.3
-        with:
-          required-ros-distributions: ${{ matrix.rosdistro }}
+      # - name: O3DE Dependencies setup - CMake
+      #   run: |
+      #     wget -O \
+      #       - https://apt.kitware.com/keys/kitware-archive-latest.asc 2> \
+      #       /dev/null | gpg --dearmor - | \
+      #       sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+      #     echo \
+      #       'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg]' \
+      #       ' https://apt.kitware.com/ubuntu/ focal main' | \
+      #       sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+      #     sudo apt-get update
+      #     sudo apt-get install cmake
+      # - name: O3DE Dependencies setup - Clang
+      #   run: |
+      #     sudo apt-get install clang-12
+      #     CC="/usr/bin/clang-12"
+      #     CXX="/usr/bin/clang++-12"
+      # - name: O3DE Dependencies setup - libffi
+      #   run: |
+      #     pushd /tmp
+      #     LIBFFI_PACKAGE_NAME=libffi6_3.2.1-8_amd64.deb
+      #     LIBFFI_PACKAGE_URL="http://mirrors.kernel.org"
+      #     LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/ubuntu/pool/main"
+      #     LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/libf/libffi/"
+      #     curl \
+      #       --location $LIBFFI_PACKAGE_URL/$LIBFFI_PACKAGE_NAME \
+      #       -o $LIBFFI_PACKAGE_NAME
+      #     sudo apt install ./$LIBFFI_PACKAGE_NAME
+      #     popd
+      # - name: O3DE Dependencies setup - additional library dependencies
+      #   run: |
+      #     sudo apt-get install libglu1-mesa-dev \
+      #       libxcb-xinerama0 libxcb-xinput0 libxcb-xinput-dev \
+      #       libxcb-xfixes0-dev libxcb-xkb-dev libxkbcommon-dev \
+      #       libxkbcommon-x11-dev libfontconfig1-dev libcurl4-openssl-dev \
+      #       libsdl2-dev zlib1g-dev mesa-common-dev libssl-dev
+      # - name: O3DE Dependencies setup - Ninja Build System
+      #   run: |
+      #     sudo apt-get install ninja-build
+      # - name: O3DE ROS2 GEM Dependencies setup - ROS2
+      #   uses: ros-tooling/setup-ros@v0.3
+      #   with:
+      #     required-ros-distributions: ${{ matrix.rosdistro }}
       - name: Register the Engine
         run: |
           mkdir $HOME/o3de-packages
