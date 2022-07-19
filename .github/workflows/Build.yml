@@ -10,8 +10,7 @@ permissions:
 
 jobs:
   build:
-    name: build
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     timeout-minutes: 240
     strategy:
       fail-fast: false
