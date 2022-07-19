@@ -49,6 +49,7 @@ jobs:
           path: o3de
       - name: O3DE git-lfs pull
         run: |
+          echo ${{ needs.extract-ref.outputs.o3de-sha }}
           cd o3de
           git lfs pull
           cd ..
