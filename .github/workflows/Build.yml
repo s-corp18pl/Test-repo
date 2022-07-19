@@ -1,0 +1,123 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - development
+
+permissions:
+  contents: read
+
+jobs:
+  extract-ref:
+    name: extract o3de sha
+    runs-on: ubuntu-20.04
+    outputs:
+      o3de-sha: ${{ steps.set_outputs.o3de-sha }}
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+      - name: Read the '.o3de-sha' file and set the environment variable
+        run: echo "O3DE_SHA_SHORT=$(cat .o3de-sha)" >> $GITHUB_ENV
+      - name: Set outputs
+        id: set_outputs
+        run: |
+          echo "::set-output name=o3de-sha::$O3DE_SHA_SHORT"
+  build:
+    name: build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        rosdistro: [galactic]
+    env:
+      ROS_DISTRO: ${{ matrix.rosdistro }}
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+      - name: O3DE ROS 2 Gem checkout
+        uses: actions/checkout@v3
+        with:
+          repository: RobotecAI/o3de-ros2-gem
+          path: o3de-ros2-gem
+      - name: O3DE checkout
+        uses: actions/checkout@v3
+        with:
+          repository: o3de/o3de
+          ref: ${{ needs.extract-ref.outputs.o3de-sha }}
+          path: o3de
+      - name: O3DE git-lfs pull
+        run: |
+          cd o3de
+          git lfs pull
+          cd ..
+      - name: O3DE Dependencies setup - CMake
+        run: |
+          wget -O \
+            - https://apt.kitware.com/keys/kitware-archive-latest.asc 2> \
+            /dev/null | gpg --dearmor - | \
+            sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+          echo \
+            'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg]' \
+            ' https://apt.kitware.com/ubuntu/ focal main' | \
+            sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+          sudo apt-get update
+          sudo apt-get install cmake
+      - name: O3DE Dependencies setup - Clang
+        run: |
+          sudo apt-get install clang-12
+          CC="/usr/bin/clang-12"
+          CXX="/usr/bin/clang++-12"
+      - name: O3DE Dependencies setup - libffi
+        run: |
+          pushd /tmp
+          LIBFFI_PACKAGE_NAME=libffi6_3.2.1-8_amd64.deb
+          LIBFFI_PACKAGE_URL="http://mirrors.kernel.org"
+          LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/ubuntu/pool/main"
+          LIBFFI_PACKAGE_URL="${LIBFFI_PACKAGE_URL}/libf/libffi/"
+          curl \
+            --location $LIBFFI_PACKAGE_URL/$LIBFFI_PACKAGE_NAME \
+            -o $LIBFFI_PACKAGE_NAME
+          sudo apt install ./$LIBFFI_PACKAGE_NAME
+          popd
+      - name: O3DE Dependencies setup - additional library dependencies
+        run: |
+          sudo apt-get install libglu1-mesa-dev \
+            libxcb-xinerama0 libxcb-xinput0 libxcb-xinput-dev \
+            libxcb-xfixes0-dev libxcb-xkb-dev libxkbcommon-dev \
+            libxkbcommon-x11-dev libfontconfig1-dev libcurl4-openssl-dev \
+            libsdl2-dev zlib1g-dev mesa-common-dev libssl-dev
+      - name: O3DE Dependencies setup - Ninja Build System
+        run: |
+          sudo apt-get install ninja-build
+      - name: O3DE ROS2 GEM Dependencies setup - ROS2
+        uses: ros-tooling/setup-ros@v0.3
+        with:
+          required-ros-distributions: ${{ matrix.rosdistro }}
+      - name: Register the Engine
+        run: |
+          mkdir $HOME/o3de-packages
+          o3de/python/get_python.sh
+          o3de/scripts/o3de.sh register --this-engine
+      - name: Create an empty project
+        run: |
+          o3de/scripts/o3de.sh create-project \
+            --project-path $HOME/o3de-projects/EmptyProject
+      - name: Add the O3DE ROS2 Gem to the Project
+        run: |
+          o3de/scripts/o3de.sh register --gem-path o3de-ros2-gem
+          o3de/scripts/o3de.sh enable-gem -gn ROS2 \
+            -pp $HOME/o3de-projects/EmptyProject
+      - name: Create the Linux build project for the Project
+        run: |
+          cd $HOME/o3de-projects/EmptyProject
+          cmake -B build/linux -S . -G "Ninja Multi-Config" \
+            -DLY_3RDPARTY_PATH=$HOME/o3de-packages
+      - name: Build the Project
+        run: >
+          cmake
+          --build $HOME/o3de-projects/EmptyProject/build/linux
+          --config release
+          --target EmptyProject.GameLauncher Editor
+          -j 2
