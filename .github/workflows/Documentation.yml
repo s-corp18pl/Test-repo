@@ -5,7 +5,9 @@ on:
     branches:
       - development
   workflow_run:
-    workflows: ["Github Pages Configuration Changed"]
+    branches:
+      - gh-pages
+    workflows: ["Documentation Configuration Changed"]
     types:
       - completed
 
