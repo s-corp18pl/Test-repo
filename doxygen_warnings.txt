@@ -214,5 +214,3 @@
 /home/runner/work/Test-repo/Test-repo/o3de-ros2-gem/Code/Source/URDF/FbxNode.h:104: warning: Member node (variable) of class ROS2::Fbx::NodeWithId is not documented.
 /home/runner/work/Test-repo/Test-repo/o3de-ros2-gem/Code/Source/URDF/FbxNode.h:35: warning: Member RawString(const AZStd::string &str) (function) of class ROS2::Fbx::RawString is not documented.
 /home/runner/work/Test-repo/Test-repo/o3de-ros2-gem/Code/Source/URDF/FbxNode.h:39: warning: Member data (variable) of class ROS2::Fbx::RawString is not documented.
-error: Style sheet './static/style/stylesheet.css' specified by HTML_EXTRA_STYLESHEET does not exist!
-error: Project logo './static/robotecai-logo.png' specified by PROJECT_LOGO does not exist!
