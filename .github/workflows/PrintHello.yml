@@ -13,4 +13,4 @@ jobs:
   hello:
     runs-on: self-hosted
     steps:
-      - run: echo "Hello Friend"
+      - run: echo "Hello Enemy!"
