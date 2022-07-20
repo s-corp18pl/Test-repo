@@ -106,6 +106,6 @@ jobs:
         run: >
           cmake
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
-          --config release
+          --config profile
           --target EmptyProject.GameLauncher Editor
           -j 2
