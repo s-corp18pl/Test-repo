@@ -85,6 +85,7 @@ jobs:
       #     required-ros-distributions: ${{ matrix.rosdistro }}
       - name: Register the Engine
         run: |
+          rm -r ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject 2> /dev/null
           mkdir -p ${{ env.RUNNER_HOME }}/o3de-packages
           o3de/python/get_python.sh
           o3de/scripts/o3de.sh register --this-engine --force
@@ -94,7 +95,6 @@ jobs:
             --project-path ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
       - name: Add the O3DE ROS2 Gem to the Project
         run: |
-          rm -r ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject 2> /dev/null
           o3de/scripts/o3de.sh register --gem-path o3de-ros2-gem
           o3de/scripts/o3de.sh enable-gem -gn ROS2 \
             -pp ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
