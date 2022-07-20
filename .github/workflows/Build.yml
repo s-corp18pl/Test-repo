@@ -17,7 +17,7 @@ jobs:
       matrix:
         rosdistro: [galactic]
     env:
-#     vv Change the o3de hash here to fit the build vv
+#     vv Change the o3de hash (long form) here to fit the build vv
       O3DE_SHA: 381a6e0f0eeab9b03e52f0d7fead511547613d6d
       ROS_DISTRO: ${{ matrix.rosdistro }}
       RUNNER_HOME: /home/alekkam/Documents/code/repos/actions-runner
@@ -87,7 +87,7 @@ jobs:
         run: |
           mkdir ${{ env.RUNNER_HOME }}/o3de-packages
           o3de/python/get_python.sh
-          o3de/scripts/o3de.sh register --this-engine
+          o3de/scripts/o3de.sh register --this-engine --force
       - name: Create an empty project
         run: |
           o3de/scripts/o3de.sh create-project \
