@@ -85,6 +85,7 @@ jobs:
       #     required-ros-distributions: ${{ matrix.rosdistro }}
       - name: Register the Engine
         run: |
+          mkdir -p ${{ env.RUNNER_HOME }}/o3de-packages
           o3de/python/get_python.sh
           o3de/scripts/o3de.sh register --this-engine --force
       - name: Create an empty project
