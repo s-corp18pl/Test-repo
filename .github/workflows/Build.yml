@@ -17,7 +17,10 @@ jobs:
       matrix:
         rosdistro: [galactic]
     env:
+#     vv Change the o3de hash here to fit the build vv
+      O3DE_SHA: 381a6e0f0eeab9b03e52f0d7fead511547613d6d
       ROS_DISTRO: ${{ matrix.rosdistro }}
+      RUNNER_HOME: /home/alekkam/Documents/code/repos/actions-runner
     steps:
       - name: Repository checkout
         uses: actions/checkout@v3
@@ -26,13 +29,11 @@ jobs:
         with:
           repository: RobotecAI/o3de-ros2-gem
           path: o3de-ros2-gem
-      - name: Extract O3DE sha
-        run: echo "O3DE_SHA_SHORT=$(cat .o3de-sha)" >> $GITHUB_ENV
       - name: O3DE checkout
         uses: actions/checkout@v3
         with:
           repository: o3de/o3de
-          ref: ${{ env.O3DE_SHA_SHORT }}
+          ref: ${{ env.O3DE_SHA }}
           path: o3de
       - name: O3DE git-lfs pull
         run: |
@@ -84,27 +85,27 @@ jobs:
       #     required-ros-distributions: ${{ matrix.rosdistro }}
       - name: Register the Engine
         run: |
-          mkdir $HOME/o3de-packages
+          mkdir ${{ env.RUNNER_HOME }}/o3de-packages
           o3de/python/get_python.sh
           o3de/scripts/o3de.sh register --this-engine
       - name: Create an empty project
         run: |
           o3de/scripts/o3de.sh create-project \
-            --project-path $HOME/o3de-projects/EmptyProject
+            --project-path ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
       - name: Add the O3DE ROS2 Gem to the Project
         run: |
           o3de/scripts/o3de.sh register --gem-path o3de-ros2-gem
           o3de/scripts/o3de.sh enable-gem -gn ROS2 \
-            -pp $HOME/o3de-projects/EmptyProject
+            -pp ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
       - name: Create the Linux build project for the Project
         run: |
-          cd $HOME/o3de-projects/EmptyProject
+          cd ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
           cmake -B build/linux -S . -G "Ninja Multi-Config" \
-            -DLY_3RDPARTY_PATH=$HOME/o3de-packages
+            -DLY_3RDPARTY_PATH=${{ env.RUNNER_HOME }}/o3de-packages
       - name: Build the Project
         run: >
           cmake
-          --build $HOME/o3de-projects/EmptyProject/build/linux
+          --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
           --config release
           --target EmptyProject.GameLauncher Editor
           -j 2
