@@ -94,6 +94,7 @@ jobs:
             --project-path ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
       - name: Add the O3DE ROS2 Gem to the Project
         run: |
+          rm -r ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject 2> /dev/null
           o3de/scripts/o3de.sh register --gem-path o3de-ros2-gem
           o3de/scripts/o3de.sh enable-gem -gn ROS2 \
             -pp ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject
