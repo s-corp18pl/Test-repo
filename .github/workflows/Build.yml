@@ -106,8 +106,8 @@ jobs:
       - name: Build the Project
         run: >
           cmake
+          CXXFLAGS="-Wno-error"
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
           --config release
           --target EmptyProject Editor
-          -Wno-error
           -j 2
