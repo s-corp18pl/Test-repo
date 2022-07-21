@@ -109,5 +109,5 @@ jobs:
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
           --config release
           --target EmptyProject Editor
-          -Werror
+          -Wno-error
           -j 2
