@@ -18,7 +18,7 @@ jobs:
         rosdistro: [galactic]
     env:
 #     vv Change the o3de hash (LONG FORMAT!) here to fit the build vv
-      O3DE_SHA: 381a6e0f0eeab9b03e52f0d7fead511547613d6d
+      O3DE_SHA: 9816da2d30e4093e4c63732650e846a4ae573667
       ROS_DISTRO: ${{ matrix.rosdistro }}
       RUNNER_HOME: /home/alekkam/Documents/code/repos/actions-runner
     steps:
@@ -105,7 +105,7 @@ jobs:
             -DLY_3RDPARTY_PATH=${{ env.RUNNER_HOME }}/o3de-packages
       - name: Build the Project
         run: >
-          cmake -E env CXXFLAGS="-Wall" cmake
+          cmake
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
           --config release
           --target EmptyProject Editor
