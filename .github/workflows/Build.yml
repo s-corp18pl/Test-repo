@@ -105,8 +105,7 @@ jobs:
             -DLY_3RDPARTY_PATH=${{ env.RUNNER_HOME }}/o3de-packages
       - name: Build the Project
         run: >
-          cmake
-          CXXFLAGS="-Wno-error"
+          cmake -E env CXXFLAGS="-Wall" cmake
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
           --config release
           --target EmptyProject Editor
