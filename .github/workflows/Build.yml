@@ -107,6 +107,6 @@ jobs:
         run: >
           cmake
           --build ${{ env.RUNNER_HOME }}/o3de-projects/EmptyProject/build/linux
-          --config profile
+          --config release
           --target EmptyProject Editor
           -j 2
